@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{ garden.name }}: Create Tier
+{% endblock %}
+
+{% block body %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{tier_form|crispy}}
+        <button type="submit" class="btn btn-primary btn-block">Create Tier</button>
+    </form>
+{% endblock %}

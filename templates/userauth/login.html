@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+    {% if invalid %}
+    <div class="alert alert-danger" role="alert">
+        The username and/or password is incorrect. 
+    </div>
+    {% endif %}
+    <form id="login_form" method="post" action="" >
+        <div class="form-group form-signin">
+            {% csrf_token %}
+            <input type="text" class="form-control" name="username" value="" placeholder="Username" autofocus/ style="margin-bottom: 10px;">
+            <input type="password" class="form-control" name="password" value="" placeholder="Password">
+            <br>
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </div>        
+    </form>
+{% endblock %}

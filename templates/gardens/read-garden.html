@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+{{ garden.name }}
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron jumbotron-fluid" style="background-color: #d6d4d6;">
+        <div class="row">
+            <div class="col-6">
+                <img style="width: inherit; text-shadow: 2px 2px 4px #000000;"
+                    src="https://homestratosphere.s3.amazonaws.com/wp-content/uploads/2016/01/19160629/4z.-Backyard-Vegetable-Garden-Ideas.jpg">
+            </div>
+            <div class="col-6 text-center">
+                <h1 class="display-4">{{ garden.name }}</h1>
+                <h2 class="lead">{{ garden.owner.city }}, {{ garden.owner.state }}</h2>
+                <br>
+                <h4>${{ garden.amount_raised }} raised | {{ garden.total_backers }} backers</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <p>{{ garden.description }}</p>
+    <br>
+    <h4>Buy Shares</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Tier</th>
+                <th scope="col">Price Per Share</th>
+                <th scope="col">Remaining</th>
+                <th scope="col">Estimated Delivery</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tier in tiers %}
+            <tr>
+                <td>{{tier.name}}</td>
+                <td>${{tier.price_per_share}}</td>
+                <td>{{tier.total_shares_remaining}}</td>
+                <td>{{tier.estimated_harvest|date:"F Y"}}</td>
+                <td>
+                    {% if tier.total_shares_remaining > 0 %}
+                    <a class="btn btn-outline-success btn-sm" href="/create-order/{{tier.id}}">Purchase Shares</a>
+                    {% else %}
+                    <a class="btn btn-outline-secondary disabled btn-sm" href="/create-order/{{tier.id}}">No Longer
+                        Available</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <h4>Updates</h4>
+    <hr>
+    {% for update in updates %}
+    <h5>{{ update.title }}</h5>
+    <p class="text-muted">{{ update.date_published}}</p>
+    <p>{{ update.text|truncatewords:150 }}<a href="/garden/{{update.garden.id}}/update/{{update.id}}/{{update.slug}}">
+            Read More</a></p>
+    <hr>
+    {% endfor %}
+{% endblock %}

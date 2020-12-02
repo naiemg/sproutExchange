@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{ order.id }}
+{% endblock %}
+
+{% block body %}
+    {% if holdings.count == 0 %}
+    <h1>You don't own any shares yet...</h1>
+    {% else %}
+        {% for holding in holdings %}
+            <h1>{{ holding.tier.garden.name }} : {{ holding.tier.name }}</h1>
+            <h4>{{ holding.total_shares }} owned</h4>
+            <h4>{{ holding.total_shares_listed }} listed for sale</h4>
+            <hr>
+            <a class="btn btn-warning" href="/create-listing/{{holding.tier.id}}/">List for sale</a>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

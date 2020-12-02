@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block body %}
+    {% if invalid %}
+    <div class="alert alert-danger" role="alert">
+        The username and/or password is incorrect. 
+    </div>
+    {% endif %}
+    <form class="" id="login_form" method="post" action="">
+        {% csrf_token %}
+
+        {{user_form|crispy}}
+        {{user_profile_form|crispy}}
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form>
+{% endblock %}

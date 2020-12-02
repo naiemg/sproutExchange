@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Place Order
+{% endblock %}
+
+{% block body %}
+        {% if invalid %}
+            <div class="alert alert-danger" role="alert">
+                Order too large, only {{tier.total_shares_remaining}} shares available for purchase
+            </div>
+        {% endif %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{order_form|crispy}}
+        <button type="submit" class="btn btn-primary btn-block">Place Order</button>
+    </form>
+{% endblock %}

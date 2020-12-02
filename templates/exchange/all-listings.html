@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    All Listings
+{% endblock %}
+
+{% block body %}
+    {% if listings.count == 0 and tiers.count == 0 %}
+        <h1>No listings yet ...</h1>
+    {% else %}
+    <h1>Buy it Secondhand</h1>
+    {% for listing in listings %}
+            <h1>{{ listing.tier.total_shares }} {{ listing.tier.name }}'s from {{ listing.tier.garden.name }}</h1>
+            <h4> {{ listing.ask_price }} </h4>
+            <a class="btn btn-warning" href="/purchase-listing/{{ listing.id }}">Buy it Now</a>
+            <hr>
+        {% endfor %}
+<hr>
+        <h1>Buy it Straight from the Farm</h1>
+        {% for tier in tiers %}
+            <h2>{{ tier.name }}'s from {{ tier.garden.name }}</h2>
+            <h4> {{ tier.price_per_share }} </h4>
+            <sm>{{ tier.total_shares_remaining }} remaining ...</sm>
+            <a class="btn btn-warning" href="/create-order/{{ tier.id }}">Buy it Now</a>
+            <hr>
+        {% endfor %}
+     {% endif %}
+{% endblock %}
