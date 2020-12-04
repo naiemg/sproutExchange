@@ -1,5 +1,6 @@
 from django import forms 
 from apps.gardens.models import Garden, Tier, Update, Comment
+import datetime
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -7,6 +8,7 @@ class DateInput(forms.DateInput):
 class GardenForm(forms.ModelForm):
     class Meta:
         model = Garden
+        widgets = {'sponsor_deadline': DateInput()}
         exclude = ['amount_raised', 'total_backers', 'date_created', 'active']
 
 class TierForm(forms.ModelForm):

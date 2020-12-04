@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block body %}
+    {% if invalid %}
+    <div class="alert alert-danger" role="alert">
+        You must choose a deadline that is 30 or more days away!
+    </div>
+    {% endif %}
     <form method="post" action="">
         {% csrf_token %}
         {{garden_form|crispy}}

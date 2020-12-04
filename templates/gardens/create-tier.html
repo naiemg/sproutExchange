@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block body %}
+    {% if invalid %}
+        <div class="alert alert-danger" role="alert">
+            You must choose a harvest date that in the future!
+        </div>
+    {% endif %}
     <form method="post" action="">
         {% csrf_token %}
         {{tier_form|crispy}}

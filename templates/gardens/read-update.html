@@ -9,7 +9,7 @@
 <h1>{{ update.title }}</h1>
 <p>{{ update.text }}</p>
 <hr>
-<form method="post" action="" style="width: 50%;">
+<form method="post" action="" style="width: 75%;">
     {% csrf_token %}
     {{comment_form|crispy}}
     <button type="submit" class="btn btn-primary btn-block">Post Comment</button>
@@ -27,7 +27,7 @@
         margin-left: 0px;
         margin-bottom: 20px;
         margin-right: 0px;
-        width: 50%;
+        width: 75%;
       ">
     <h6>{{comment.author.user.username}}  |  {{comment.date_published}} </h6>
     <p>{{ comment.text }}<p>

@@ -7,6 +7,8 @@ from apps.gardens.models import Garden, Tier, Update, Comment
 from apps.gardens.forms import GardenForm, TierForm, UpdateForm, CommentForm
 from apps.userauth.models import UserProfile
 
+from datetime import datetime, timezone
+
 @login_required
 def create_garden(request):
 	context_dict = {}
@@ -23,12 +25,23 @@ def create_garden(request):
 	if request.method == 'POST':
 		garden_form = GardenForm(data=request.POST)
 		garden_form.fields['owner'].widget = forms.HiddenInput()
-
+		
 		if garden_form.is_valid():
 			garden = garden_form.save()
 			garden.owner = current_user
+			
+			now = datetime.now(timezone.utc)
+			if (garden.sponsor_deadline - now).days < 30:
+				invalid = True
+				context_dict['invalid'] = invalid
+				garden_form = GardenForm(data=request.POST)
+				garden_form.fields['owner'].widget = forms.HiddenInput()
+				context_dict['garden_form'] = garden_form
+				return render(request, 'gardens/create-garden.html', context_dict)
+			else:
+				pass
+			
 			garden.save()
-
 			return HttpResponseRedirect('/garden/'+str(garden.id))
 	else:
 		garden_form = GardenForm()
@@ -123,6 +136,18 @@ def create_tier(request, garden_id):
 		if tier_form.is_valid():
 			tier = tier_form.save()
 			tier.garden = garden
+
+			now = datetime.now(timezone.utc)
+			if (tier.estimated_harvest - now).days < 30:
+				invalid = True
+				context_dict['invalid'] = invalid
+				tier_form = TierForm(data=request.POST)
+				tier_form.fields['garden'].widget = forms.HiddenInput()
+				context_dict['tier_form'] = tier_form
+				return render(request, 'gardens/create-tier.html', context_dict)
+			else:
+				pass
+
 			tier.save()
 
 			return HttpResponseRedirect('/garden/'+str(tier.garden.id))

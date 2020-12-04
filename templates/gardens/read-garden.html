@@ -1,61 +1,90 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load humanize %}
 
 {% block title %}
 {{ garden.name }}
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron jumbotron-fluid" style="background-color: #d6d4d6;">
-        <div class="row">
-            <div class="col-6">
-                <img style="width: inherit; text-shadow: 2px 2px 4px #000000;"
-                    src="https://homestratosphere.s3.amazonaws.com/wp-content/uploads/2016/01/19160629/4z.-Backyard-Vegetable-Garden-Ideas.jpg">
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img style="width: inherit; text-shadow: 2px 2px 4px #000000;"
+                src="https://images1.apartments.com/i2/b4XOBNlcZUTf57eWzLepgcJTM9YFw3IgJGWOniVPioo/117/242-09-jamaica-ave-unit-1-queens-ny-primary-photo.jpg">
+        </div>
+        <div class="col-md-6">
+            <h5 style="color: green; font-variant: small-caps;">Garden</h5>
+            <h1>{{ garden.name }}</h1>
+            <h4 style="font-weight: normal;">{{ garden.owner.city }}, {{ garden.owner.state }}</h4>
+            <hr>
+            <div class="row">
+                <div class="col-md-8">
+                    <h5 class="text-muted">Campaign Ends in {{ garden.sponsor_deadline|naturaltime }} </h5>
+                </div>
+                <div class="col-md-4">
+                    <h5>${{ garden.amount_raised }} raised</h5>
+                    <h5>{{ garden.total_backers }} backers</h5>
+                </div>
             </div>
-            <div class="col-6 text-center">
-                <h1 class="display-4">{{ garden.name }}</h1>
-                <h2 class="lead">{{ garden.owner.city }}, {{ garden.owner.state }}</h2>
-                <br>
-                <h4>${{ garden.amount_raised }} raised | {{ garden.total_backers }} backers</h4>
-            </div>
+            <a type="button" class="btn btn-success" href="#buy_shares">Sponsor</a>
+            <a type="button" class="btn btn-primary">Share</a>
         </div>
     </div>
 </div>
+
 <div class="container">
+    <br>
+    <h4>About this Garden</h4>
+    <hr>
     <p>{{ garden.description }}</p>
     <br>
-    <h4>Buy Shares</h4>
+    <h4 id="buy_shares">Buy Shares</h4>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">Tier</th>
-                <th scope="col">Price Per Share</th>
+                <th scope="col">Price/Share</th>
                 <th scope="col">Remaining</th>
-                <th scope="col">Estimated Delivery</th>
+                <th scope="col">Est. Delivery</th>
             </tr>
         </thead>
         <tbody>
             {% for tier in tiers %}
-            <tr>
-                <td>{{tier.name}}</td>
-                <td>${{tier.price_per_share}}</td>
-                <td>{{tier.total_shares_remaining}}</td>
-                <td>{{tier.estimated_harvest|date:"F Y"}}</td>
-                <td>
+            <td>{{tier.name}}</td>
+            <td>${{tier.price_per_share}}</td>
+            <td>{{tier.total_shares_remaining}}</td>
+            <td>{{tier.estimated_harvest|date:"F Y"}}</td>
+            <td>
+                <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
                     {% if tier.total_shares_remaining > 0 %}
-                    <a class="btn btn-outline-success btn-sm" href="/create-order/{{tier.id}}">Purchase Shares</a>
+                    <a class="btn btn-outline-success" href="/create-order/{{tier.id}}"><i
+                            class="fas fa-hand-holding-usd"></i></a>
                     {% else %}
-                    <a class="btn btn-outline-secondary disabled btn-sm" href="/create-order/{{tier.id}}">No Longer
+                    <a class="btn btn-outline-secondary disabled" href="/create-order/{{tier.id}}">No Longer
                         Available</a>
                     {% endif %}
+                    <a class="accordion-toggle collapsed btn btn-outline-info" id="accordion1" data-toggle="collapse"
+                        href="#tier_{{tier.id}}">
+                        <i class="fas fa-caret-down"></i></a>
+                </div>
+            </td>
+            <tr class="hide-table-padding">
+                <td colspan="100" style="border-bottom: none; border-top: none;">
+                    <div id="tier_{{tier.id}}" class="collapse in p-3">
+                        <div class="row">
+                            <i>{{tier.description}}</i>
+                        </div>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
     <br>
-    <h4>Updates</h4>
+    <h4>Updates ({{updates.count}})</h4>
     <hr>
     {% for update in updates %}
     <h5>{{ update.title }}</h5>
@@ -64,4 +93,4 @@
             Read More</a></p>
     <hr>
     {% endfor %}
-{% endblock %}
+    {% endblock %}
