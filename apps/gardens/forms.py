@@ -1,5 +1,5 @@
 from django import forms 
-from apps.gardens.models import Garden, Tier, Update, Comment
+from apps.gardens.models import Garden, Tier, Update, Comment, Album
 import datetime
 
 class DateInput(forms.DateInput):
@@ -29,3 +29,8 @@ class CommentForm(forms.ModelForm):
           'text': forms.Textarea(attrs={'rows':2, 'cols':15}),
         }
         exclude = ['date_published']
+
+class ImageUploadForm(forms.ModelForm):
+    class Meta:
+        model = Album
+        exclude = ['garden']

@@ -1,26 +1,60 @@
 {% load crispy_forms_tags %}
 
+<!doctype html>
+<html lang="en">
+
 <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <!--Font Awesome-->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"
+        integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe"
+        crossorigin="anonymous"></script>
+
     <title>Register | Sprout Exchange</title>
-    {{ address_form.media }}
+
     <!-- needed for JS/GoogleMaps lookup -->
+    {{ address_form.media }}
 </head>
 
 <div class="container">
-    {% if invalid %}
-    <div class="alert alert-danger" role="alert">
-        The username and/or password is incorrect.
+    <div class="row">
+        <div class="col-md-6 pt-5 text-center">
+            <h1 style="font-variant: small-caps;">Sprout Exchange</h1>
+            <img class="img-fluid"
+                style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); max-width: 75%;"
+                src="https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260">
+            <h4 style="color: teal;">
+                <br>
+                Patrons can contribute to a garden in exchange for a share of the produce.
+                <hr>
+            </h4>
+            <h5>
+                <i>Already have an account? <a href="/login/">Login</a></i>
+            </h5>
+        </div>
+        <div class="col-md-6 pt-5">
+            {% if invalid %}
+            <div class="alert alert-danger" role="alert">
+                The username and/or password is incorrect.
+            </div>
+            {% endif %}
+            <div class="text-center" style="color: seagreen;">
+                <h3>Register</h3>
+            </div>
+            <form class="" id="login_form" method="post" action="" autocomplete="off">
+                {% csrf_token %}
+                {{user_form|crispy}}
+                {{address_form|crispy}}
+                {{user_profile_form|crispy}}
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </form>
+        </div>
     </div>
-    {% endif %}
-    <form class="" id="login_form" method="post" action="" autocomplete="off">
-        {% csrf_token %}
-        {{user_form|crispy}}
-        {{address_form|crispy}}
-        {{user_profile_form|crispy}}
-        <button type="submit" class="btn btn-primary btn-block">Register</button>
-    </form>
 </div>

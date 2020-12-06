@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
+<h1>Welcome, {{current_user.user.first_name}} {{current_user.user.last_name}}!</h1>
+<hr>
+<div class="row">
+    <div class="col-md-4">
+        <!--Gardener View-->
+        {% if current_user.is_farmer %}
+        <h5 style="color: green; font-variant: small-caps;">Gardener</h5>
+
+        {% for garden in your_gardens %}
+        <div class="card" style="max-width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">{{garden.name}}</h5>
+                <p class="card-text">${{garden.amount_raised}} raised<br>{{garden.total_backers}} backers</p>
+                <div class="btn-group">
+                    <a href="/garden/{{garden.id}}" class="btn btn-info">View Garden</a>
+                    <a href="/garden/{{garden.id}}/update" class="btn btn-secondary">Update Garden</a>
+                    <a href="/garden/{{garden.id}}/create-update" class="btn btn-primary">Update Patrons</a>
+                    <a href="/garden/{{garden.id}}/delete" class="btn btn-danger">Delete Garden</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% empty %}
+        <h5>It seems like you don't have any garden's yet...</h5>
+        <a class="btn btn-secondary" href="/create-garden">Create a Garden</a>
+        {% endfor %}
+
+        <!--Patron View-->
+        {% else %}
+        <h5 style="color: rgb(154, 13, 137); font-variant: small-caps;">Patron</h5>
+
+        {% for holding in your_portfolio %}
+        <div class="card" style="max-width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">{{holding.tier.garden.name}}<br><i
+                        class="text-secondary">{{holding.tier.name}}</i>
+                </h5>
+                <p class="card-text">{{holding.total_shares}} shares<br>{{holding.total_shares_listed}} listed<br>{{holding.tier.estimated_harvest|date:"F Y"}}
+                    harvest</p>
+                <div class="btn-group">
+                    <a href="/garden/{{holding.tier.garden.id}}" class="btn btn-info">View Garden</a>
+                    <a href="/create-listing/{{holding.tier.id}}" class="btn btn-danger">List Shares</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        {% empty %}
+        <h5>It seems like you don't own any shares yet...</h5>
+        <a class="btn btn-secondary" href="/create-garden">Explore Gardens</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="col-md-8">
+        {% if current_user.is_farmer %}
+        {% else %}
+        <div class="card text-white bg-success mb-3" style="">
+            <div class="card-body">
+              <p class="card-text">        
+                  <h2 class="">Total Assets : ${{total_asset_value}}</h2>
+              </p>
+            </div>
+        </div>
+
+        <h3>Recent Transactions</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Transaction Number</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Garden</th>
+                    <th scope="col">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in past_orders %}
+                <tr>
+                    <td><small>{{order.id}}</small></td>
+                    <td>{{order.order_date}}</td>
+                    <td>{{order.tier.garden.name}}</td>
+                    <td>${{order.total_cost}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from apps.gardens.models import Garden, Tier, Update, Comment, Album
-from apps.gardens.forms import GardenForm, TierForm, UpdateForm, CommentForm
-from apps.userauth.models import UserProfile
+from apps.gardens.forms import GardenForm, TierForm, UpdateForm, CommentForm, ImageUploadForm
+from apps.userauth.models import UserProfile, Address
 
 from datetime import datetime, timezone
 
@@ -29,7 +29,7 @@ def create_garden(request):
 		if garden_form.is_valid():
 			garden = garden_form.save()
 			garden.owner = current_user
-			
+
 			now = datetime.now(timezone.utc)
 			if (garden.sponsor_deadline - now).days < 30:
 				invalid = True
@@ -54,6 +54,9 @@ def create_garden(request):
 def read_garden(request, garden_id):
 	context_dict = {}
 
+	current_user = UserProfile.objects.get(user=request.user)
+	context_dict['current_user'] = current_user
+
 	garden = Garden.objects.get(id = garden_id)
 	updates = Update.objects.filter(garden=garden)
 	
@@ -63,8 +66,8 @@ def read_garden(request, garden_id):
 	tiers = Tier.objects.filter(garden=garden)
 	context_dict['tiers'] = tiers
 
-	images = Album.objects.filter(garden=garden)
-	context_dict['images'] = images
+	address = Address.objects.get(user=current_user)
+	context_dict['address'] = address
 
 	return render(request, 'gardens/read-garden.html', context_dict)
 
@@ -312,3 +315,28 @@ def create_comment(request, garden_id, update_id, update_slug):
 	context_dict['comment_form'] = comment_form
 
 	return render(request, 'gardens/create-comment.html', context_dict)
+
+@login_required
+def upload_image(request, garden_id):
+	context_dict = {}
+	
+	current_user = UserProfile.objects.get(user=request.user)
+	garden = Garden.objects.get(id=garden_id)
+	context_dict['garden'] = garden
+
+	if request.method == 'POST':
+		image_upload_form = ImageUploadForm(data=request.POST)
+		
+		if image_upload_form.is_valid():
+			img = image_upload_form.save()
+			img.garden = garden
+			img.save()
+			
+			return HttpResponseRedirect('/garden/'+str(garden.id))
+
+	else:
+		image_upload_form = ImageUploadForm()
+
+	context_dict['image_upload_form'] = image_upload_form
+
+	return render(request, 'gardens/upload-image.html', context_dict)

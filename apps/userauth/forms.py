@@ -26,10 +26,12 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
+		labels = {
+			'is_farmer' : 'I would like to create a garden',
+		}
 		exclude = ['user', 'address']
 
 class AddressForm(forms.ModelForm):
 	class Meta:
 		model = Address
-		address = AddressField(widget=AddressWidget(attrs={'autocomplete': 'off'}))
 		exclude = ['user']

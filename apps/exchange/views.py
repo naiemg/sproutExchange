@@ -209,14 +209,14 @@ def purchase_listing(request, listing_id):
 	seller_holding = Holding.objects.get(owner=listing.owner, tier=tier)
 
 	# end listing
-	print(listing.active)
 	listing.active = False
 	listing.save()
-	print(listing.active)
+
 	# remove shares from sellers portfolio
 	seller_holding.total_shares -= listing.total_shares
 	seller_holding.total_shares_listed -= listing.total_shares
 	seller_holding.save()
+	
 	# add shares to buyer's portfolio
 	try:
 		buyer_holdings = Holding.objects.get(owner=current_user, tier=tier)
@@ -228,5 +228,8 @@ def purchase_listing(request, listing_id):
 	# create an order record for buyer
 	order = Order.objects.create(tier=tier, owner=current_user, shares=listing.total_shares, total_cost=listing.ask_price)
 	order.save()
+
+	# delete listing
+	listing.delete()
 
 	return HttpResponseRedirect('/portfolio')
