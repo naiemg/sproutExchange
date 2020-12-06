@@ -79,7 +79,7 @@ def create_order(request, tier_id):
 				holding = Holding.objects.create(owner=current_user, tier=tier, total_shares=order.shares)
 				holding.save()
 			
-			return HttpResponseRedirect('/order/'+str(order.id))
+			return HttpResponseRedirect('/dashboard')
 	else:
 		order_form = OrderForm()
 		order_form.fields['owner'].widget = forms.HiddenInput()
