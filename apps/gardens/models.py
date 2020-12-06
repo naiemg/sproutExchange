@@ -11,7 +11,8 @@ class Garden(models.Model):
 	date_created = models.DateTimeField(auto_now_add=True)
 	active = models.BooleanField(default=True)
 	sponsor_deadline = models.DateTimeField(auto_now_add=False)
-	
+	featured_image = models.ImageField(upload_to='media', blank=True, null=True)
+
 	def __str__(self):
 		return self.name
 

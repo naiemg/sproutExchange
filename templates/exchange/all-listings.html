@@ -2,28 +2,53 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    All Listings
+All Listings
 {% endblock %}
 
 {% block body %}
-    {% if listings.count == 0 and tiers.count == 0 %}
-        <h1>No listings yet ...</h1>
-    {% else %}
-    <h1>Buy it Secondhand</h1>
-    {% for listing in listings %}
-            <h1>{{ listing.tier.total_shares }} {{ listing.tier.name }}'s from {{ listing.tier.garden.name }}</h1>
-            <h4> {{ listing.ask_price }} </h4>
-            <a class="btn btn-warning" href="/purchase-listing/{{ listing.id }}">Buy it Now</a>
-            <hr>
-        {% endfor %}
+{% if listings.count == 0 and tiers.count == 0 %}
+<h1>No listings yet ...</h1>
+{% else %}
+<h2>New Listings</h2>
+{% for listing in listings %}
+<div class="mb-2 p-4" style="background-image: linear-gradient(90deg, rgba(12, 103, 45, 0.7), 45%,rgb(12, 103, 45)), url(https://images.barrons.com/im-76867?width=620&size=1.5);
+    background-repeat: no-repeat;
+    background-size: cover; 
+    color: white; 
+    border-radius: 4px;">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>{{ listing.tier.name }} - {{ listing.tier.garden.name }}</h2>
+            <h4>${{ listing.ask_price }}</h4>
+            <sm>{{ listing.tier.total_shares }} shares</sm>
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-outline-light" href="/garden/{{ listing.tier.garden.id }}">View Garden</a>
+            <a class="btn btn-outline-light" href="/purchase-listing/{{listing.id}}/">Buy it Now</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
 <hr>
-        <h1>Buy it Straight from the Farm</h1>
-        {% for tier in tiers %}
-            <h2>{{ tier.name }}'s from {{ tier.garden.name }}</h2>
-            <h4> {{ tier.price_per_share }} </h4>
+<h2>Direct Purchase From Garden</h2>
+{% for tier in tiers %}
+<div class="mb-2 p-4" style="background-image: linear-gradient(90deg, rgba(12, 103, 45, 0.7), 45%,rgb(12, 103, 45)), url(https://images.barrons.com/im-76867?width=620&size=1.5);
+                                        background-repeat: no-repeat;
+                                        background-size: cover; 
+                                        color: white; 
+                                        border-radius: 4px;">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>{{ tier.name }} - {{ tier.garden.name }}</h2>
+            <h4>${{ tier.price_per_share }}/share</h4>
             <sm>{{ tier.total_shares_remaining }} remaining ...</sm>
-            <a class="btn btn-warning" href="/create-order/{{ tier.id }}">Buy it Now</a>
-            <hr>
-        {% endfor %}
-     {% endif %}
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-outline-light" href="/garden/{{ tier.garden.id }}">View Garden</a>
+            <a class="btn btn-outline-light" href="/create-order/{{ tier.id }}">Buy it Now</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 {% endblock %}
