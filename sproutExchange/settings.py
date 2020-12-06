@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     #third party apps
     'crispy_forms',
+    'address',
 
     #custom apps
     'apps.userauth',
@@ -130,4 +131,21 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.0/howto/static-files/
+
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/var/www/static/',
+]
+
+
+# Media files (User uploaded images)
+# https://www.youtube.com/watch?v=tT2JOpfelSg/
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+GOOGLE_API_KEY = 'AIzaSyA_OCrR3F52RhonTD4gq_bqJpyXxC3kB6g'

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 
-from apps.gardens.models import Garden, Tier, Update, Comment
+from apps.gardens.models import Garden, Tier, Update, Comment, Album
 from apps.gardens.forms import GardenForm, TierForm, UpdateForm, CommentForm
 from apps.userauth.models import UserProfile
 
@@ -62,6 +62,9 @@ def read_garden(request, garden_id):
 
 	tiers = Tier.objects.filter(garden=garden)
 	context_dict['tiers'] = tiers
+
+	images = Album.objects.filter(garden=garden)
+	context_dict['images'] = images
 
 	return render(request, 'gardens/read-garden.html', context_dict)
 

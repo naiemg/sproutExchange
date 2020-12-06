@@ -1,21 +1,26 @@
-{% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}
-    Register
-{% endblock %}
+<head>
 
-{% block body %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <title>Register | Sprout Exchange</title>
+    {{ address_form.media }}
+    <!-- needed for JS/GoogleMaps lookup -->
+</head>
+
+<div class="container">
     {% if invalid %}
     <div class="alert alert-danger" role="alert">
-        The username and/or password is incorrect. 
+        The username and/or password is incorrect.
     </div>
     {% endif %}
-    <form class="" id="login_form" method="post" action="">
+    <form class="" id="login_form" method="post" action="" autocomplete="off">
         {% csrf_token %}
-
         {{user_form|crispy}}
+        {{address_form|crispy}}
         {{user_profile_form|crispy}}
         <button type="submit" class="btn btn-primary btn-block">Register</button>
     </form>
-{% endblock %}
+</div>

@@ -57,6 +57,11 @@ def create_order(request, tier_id):
 			
 			order.save()
 
+			garden = order.tier.garden
+			garden.total_backers += 1
+			garden.amount_raised += order.total_cost
+			garden.save()
+
 			# Decrement the total shares remining in a tier
 			tier.total_shares_remaining -= order.shares
 			tier.save()

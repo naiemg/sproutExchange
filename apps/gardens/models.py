@@ -61,3 +61,7 @@ class Comment(models.Model):
 
 	def __str__(self):
 		return self.text
+
+class Album(models.Model):
+	garden = models.ForeignKey(Garden, on_delete=models.CASCADE, blank=True, null=True)
+	field_name = models.ImageField(upload_to='media', blank=True, null=True)

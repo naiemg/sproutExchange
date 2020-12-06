@@ -1,13 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from address.models import AddressField
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address_line_one = models.CharField(max_length=255)
-    address_line_two = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=2)
-    zipcode = models.IntegerField()
     telephone = models.CharField(max_length=20)
     is_farmer = models.BooleanField(default=False)
     
@@ -20,3 +16,10 @@ class FarmerProfile(models.Model):
 
     def __str__(self):
         return self.user_profile.username
+
+class Address(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    address = AddressField(on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.address)

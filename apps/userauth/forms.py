@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
-from apps.userauth.models import UserProfile
+from apps.userauth.models import UserProfile, Address
+
+from address.forms import AddressField, AddressWidget
 
 class UserForm(forms.ModelForm):
 	email = forms.EmailField(required=True)
@@ -24,4 +26,10 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
+		exclude = ['user', 'address']
+
+class AddressForm(forms.ModelForm):
+	class Meta:
+		model = Address
+		address = AddressField(widget=AddressWidget(attrs={'autocomplete': 'off'}))
 		exclude = ['user']
