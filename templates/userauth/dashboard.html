@@ -8,11 +8,14 @@ Dashboard
 <h1>Welcome, {{current_user.user.first_name}} {{current_user.user.last_name}}!</h1>
 <hr>
 <div class="row">
+
     <div class="col-md-4">
+        
         <!--Gardener View-->
         {% if current_user.is_farmer %}
         <h5 style="color: green; font-variant: small-caps;">Gardener</h5>
 
+        <!--List All Gardener's Information-->
         {% for garden in your_gardens %}
         <div class="card" style="max-width: 100%;">
             <div class="card-body">
@@ -28,6 +31,8 @@ Dashboard
         </div>
         <br>
         {% empty %}
+        
+        <!--Message if gardener owns no gardens-->
         <h5>It seems like you don't have any garden's yet...</h5>
         <a class="btn btn-secondary" href="/create-garden">Create a Garden</a>
         {% endfor %}
@@ -36,13 +41,15 @@ Dashboard
         {% else %}
         <h5 style="color: rgb(154, 13, 137); font-variant: small-caps;">Patron</h5>
 
+        <!--List All Patron's Holdings-->
         {% for holding in your_portfolio %}
         <div class="card" style="max-width: 100%;">
             <div class="card-body">
                 <h5 class="card-title">{{holding.tier.garden.name}}<br><i
                         class="text-secondary">{{holding.tier.name}}</i>
                 </h5>
-                <p class="card-text">{{holding.total_shares}} shares<br>{{holding.total_shares_listed}} listed<br>{{holding.tier.estimated_harvest|date:"F Y"}}
+                <p class="card-text">{{holding.total_shares}} shares<br>{{holding.total_shares_listed}}
+                    listed<br>{{holding.tier.estimated_harvest|date:"F Y"}}
                     harvest</p>
                 <div class="btn-group">
                     <a href="/garden/{{holding.tier.garden.id}}" class="btn btn-info">View Garden</a>
@@ -52,6 +59,8 @@ Dashboard
         </div>
         <br>
         {% empty %}
+        
+        <!--Message if there are no holdings-->
         <h5>It seems like you don't own any shares yet...</h5>
         <a class="btn btn-secondary" href="/create-garden">Explore Gardens</a>
         {% endfor %}
@@ -63,9 +72,9 @@ Dashboard
         {% else %}
         <div class="card text-white bg-success mb-3" style="">
             <div class="card-body">
-              <p class="card-text">        
-                  <h2 class="">Total Assets : ${{total_asset_value}}</h2>
-              </p>
+                <p class="card-text">
+                <h2 class="">Total Assets : ${{total_asset_value}}</h2>
+                </p>
             </div>
         </div>
 

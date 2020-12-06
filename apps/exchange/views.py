@@ -64,6 +64,7 @@ def create_order(request, tier_id):
 
 			# Decrement the total shares remining in a tier
 			tier.total_shares_remaining -= order.shares
+			tier.num_backers += 1
 			tier.save()
 
 			# Add shares to user's portfolio

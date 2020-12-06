@@ -122,6 +122,7 @@ def user_logout(request):
 def user_dashboard(request):
 	context_dict = {}
 	
+	# Get profile of the user currently logged in
 	current_user = UserProfile.objects.get(user=request.user)
 	context_dict['current_user'] = current_user
 

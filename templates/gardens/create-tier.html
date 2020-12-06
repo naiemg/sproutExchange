@@ -8,7 +8,7 @@
 {% block body %}
     {% if invalid %}
         <div class="alert alert-danger" role="alert">
-            You must choose a harvest date that in the future!
+            You must choose a harvest date more than 50 days after {{garden.sponsor_deadline}}!
         </div>
     {% endif %}
     <form method="post" action="">

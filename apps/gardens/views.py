@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -17,11 +18,13 @@ def create_garden(request):
 	
 	if current_user.is_farmer == False:
 		# If current user is not a farmer, then don't show them this page
-		# Instead, redirect them somewhere else
+		# Only farmers can create a garden
+		# Redirect other users to dashboard
 		return HttpResponseRedirect('/dashboard')
 	else:
 		pass
 
+	# Form to create a garden
 	if request.method == 'POST':
 		garden_form = GardenForm(data=request.POST)
 		garden_form.fields['owner'].widget = forms.HiddenInput()
@@ -30,6 +33,8 @@ def create_garden(request):
 			garden = garden_form.save()
 			garden.owner = current_user
 
+			# Check to ensure that sponsor_deadline date is at least 1 month away
+			# For any dates less than 1 month away, show error message / prompt
 			now = datetime.now(timezone.utc)
 			if (garden.sponsor_deadline - now).days < 30:
 				invalid = True
@@ -68,6 +73,9 @@ def read_garden(request, garden_id):
 
 	address = Address.objects.get(user=current_user)
 	context_dict['address'] = address
+
+	images = Album.objects.filter(garden=garden)
+	context_dict['images'] = images
 
 	return render(request, 'gardens/read-garden.html', context_dict)
 
@@ -110,13 +118,17 @@ def delete_garden(request, garden_id):
 	
 	garden = Garden.objects.get(id = garden_id)
 
-	if(garden.owner.id != current_user.id):
-		# see if the current user owns the garden they are attempting to edit
+	if garden.owner.id != current_user.id:
+		# see if the current user owns the garden they are attempting to delete
 		return HttpResponseRedirect('/')
 	else:
 		pass
 
-	garden.delete()
+	# Gardens that already have patrons cannot be deleted
+	if garden.total_backers > 0:
+		messages.error(request,f'This garden has {garden.total_backers} backers & cannot be deleted!')
+	else:
+		garden.delete()
 
 	return HttpResponseRedirect('/dashboard')
 
@@ -143,8 +155,10 @@ def create_tier(request, garden_id):
 			tier = tier_form.save()
 			tier.garden = garden
 
-			now = datetime.now(timezone.utc)
-			if (tier.estimated_harvest - now).days < 30:
+			# Check to ensure that estimated_harvest date is at least 50 days from garden_sponsor_deadline
+			# For any dates less than 50 days away, show error message / prompt
+			garden_sponsor_deadline = garden.sponsor_deadline
+			if (tier.estimated_harvest - garden_sponsor_deadline).days < 50:
 				invalid = True
 				context_dict['invalid'] = invalid
 				tier_form = TierForm(data=request.POST)
@@ -217,7 +231,11 @@ def delete_tier(request, garden_id, tier_id):
 	else:
 		pass
 
-	tier.delete()
+	# Tiers that already have patrons cannot be deleted
+	if tier.num_backers > 0:
+		messages.error(request,f'This tier has {tier.num_backers} backers & cannot be deleted!')
+	else:
+		tier.delete()
 
 	return HttpResponseRedirect(f'/garden/{garden.id}')
 
