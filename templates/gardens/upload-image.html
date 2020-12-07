@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block body %}
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {{image_upload_form|crispy}}
-        <button type="submit" class="btn btn-primary btn-block">Create Tier</button>
+        <button type="submit" class="btn btn-primary btn-block">Upload Image</button>
     </form>
 {% endblock %}

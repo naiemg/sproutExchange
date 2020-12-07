@@ -21,6 +21,6 @@ urlpatterns = [
 	# Comment
 	path('garden/<int:garden_id>/update/<int:update_id>/<slug:update_slug>/comment', views.create_comment),
 
-	# Image
+	# Update
 	path('garden/<int:garden_id>/upload-image', views.upload_image),
 ]

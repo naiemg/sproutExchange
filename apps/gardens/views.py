@@ -56,6 +56,7 @@ def create_garden(request):
 
 	return render(request, 'gardens/create-garden.html', context_dict)
 
+@login_required
 def read_garden(request, garden_id):
 	context_dict = {}
 
@@ -343,13 +344,14 @@ def upload_image(request, garden_id):
 	context_dict['garden'] = garden
 
 	if request.method == 'POST':
-		image_upload_form = ImageUploadForm(data=request.POST)
-		
+		image_upload_form = ImageUploadForm(request.POST, request.FILES)
 		if image_upload_form.is_valid():
-			img = image_upload_form.save()
+			image_upload_form.save()
+			# Get the current instance object to display in the template
+			img = image_upload_form.instance
 			img.garden = garden
 			img.save()
-			
+
 			return HttpResponseRedirect('/garden/'+str(garden.id))
 
 	else:

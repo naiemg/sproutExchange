@@ -17,9 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from apps.exchange import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.all_listings),
     path('', include('apps.userauth.urls')),
     path('', include('apps.gardens.urls')),
     path('', include('apps.exchange.urls')),

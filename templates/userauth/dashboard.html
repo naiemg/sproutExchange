@@ -13,7 +13,6 @@ Dashboard
         
         <!--Gardener View-->
         {% if current_user.is_farmer %}
-        <h5 style="color: green; font-variant: small-caps;">Gardener</h5>
 
         <!--List All Gardener's Information-->
         {% for garden in your_gardens %}
@@ -39,7 +38,6 @@ Dashboard
 
         <!--Patron View-->
         {% else %}
-        <h5 style="color: rgb(154, 13, 137); font-variant: small-caps;">Patron</h5>
 
         <!--List All Patron's Holdings-->
         {% for holding in your_portfolio %}

@@ -151,7 +151,7 @@ def create_listing(request, tier_id):
 			holding.total_shares_listed += listing.total_shares
 			holding.save()
 
-			return HttpResponseRedirect('/portfolio')
+			return HttpResponseRedirect('/')
 	else:
 		listing_form = ListingForm()
 		listing_form.fields['owner'].widget = forms.HiddenInput()
@@ -165,8 +165,6 @@ def create_listing(request, tier_id):
 def all_listings(request):
 	context_dict = {}
 	
-	current_user = UserProfile.objects.get(user=request.user)
-
 	listings = Listing.objects.all()
 	context_dict['listings'] = listings
 
@@ -195,7 +193,7 @@ def delete_listing(request, listing_id):
 
 	listing.delete()
 
-	return HttpResponseRedirect('/portfolio')
+	return HttpResponseRedirect('/')
 
 @login_required
 def purchase_listing(request, listing_id):
@@ -233,4 +231,4 @@ def purchase_listing(request, listing_id):
 	# delete listing
 	listing.delete()
 
-	return HttpResponseRedirect('/portfolio')
+	return HttpResponseRedirect('/')

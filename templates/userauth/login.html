@@ -1,22 +1,42 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Login
+Login
 {% endblock %}
 
 {% block body %}
-    {% if invalid %}
-    <div class="alert alert-danger" role="alert">
-        The username and/or password is incorrect. 
-    </div>
-    {% endif %}
-    <form id="login_form" method="post" action="" >
-        <div class="form-group form-signin">
-            {% csrf_token %}
-            <input type="text" class="form-control" name="username" value="" placeholder="Username" autofocus/ style="margin-bottom: 10px;">
-            <input type="password" class="form-control" name="password" value="" placeholder="Password">
+{% if invalid %}
+<div class="alert alert-danger" role="alert">
+    The username and/or password is incorrect.
+</div>
+{% endif %}
+<div class="row">
+    <!--Information about Sprout Exchange-->
+    <div class="col-md-6 text-center">
+        <h1 style="font-variant: small-caps;">Sprout Exchange</h1>
+        <img class="img-fluid"
+            style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); max-width: 75%;"
+            src="https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260">
+        <h4 style="color: teal;">
             <br>
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
-        </div>        
-    </form>
+            Patrons can contribute to a garden in exchange for a share of the produce.
+            <hr>
+        </h4>
+        <h5>
+            <i>Don't have an account? <a href="/register/">Register</a></i>
+        </h5>
+    </div>
+    <div class="col-md-6 pt-5 text-center">
+        <form id="login_form" method="post" action="">
+            <div class="form-group form-signin">
+                {% csrf_token %}
+                <input type="text" class="form-control" name="username" value="" placeholder="Username" autofocus/
+                    style="margin-bottom: 10px;">
+                <input type="password" class="form-control" name="password" value="" placeholder="Password">
+                <br>
+                <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

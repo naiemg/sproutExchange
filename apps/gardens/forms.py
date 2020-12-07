@@ -28,6 +28,10 @@ class CommentForm(forms.ModelForm):
         widgets = {
           'text': forms.Textarea(attrs={'rows':2, 'cols':15}),
         }
+        labels = {
+			'text' : 'Comment:',
+		}
+
         exclude = ['date_published']
 
 class ImageUploadForm(forms.ModelForm):
