@@ -6,7 +6,7 @@ class Garden(models.Model):
 	name = models.CharField(max_length=255)
 	owner = models.ForeignKey('userauth.UserProfile', on_delete=models.CASCADE, blank=True, null=True)
 	description = models.TextField()
-	amount_raised = models.IntegerField(default=0)
+	amount_raised = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
 	total_backers = models.IntegerField(default=0)
 	date_created = models.DateTimeField(auto_now_add=True)
 	active = models.BooleanField(default=True)
@@ -64,4 +64,4 @@ class Comment(models.Model):
 
 class Album(models.Model):
 	garden = models.ForeignKey(Garden, on_delete=models.CASCADE, blank=True, null=True)
-	field_name = models.ImageField(upload_to='media', blank=True, null=True)
+	field_name = models.ImageField(upload_to='media')

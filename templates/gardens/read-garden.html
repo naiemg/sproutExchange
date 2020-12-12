@@ -27,6 +27,8 @@
                             <img src="{{ image.field_name.url }}" class="img-fluid"
                                 style="max-height:max-content; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                         </div>
+                        {% empty %}
+                        <h1>No Image Available</h1>
                         {% endfor %}
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -54,9 +56,14 @@
                         <h5>{{ garden.total_backers }} backers</h5>
                     </div>
                 </div>
-                <a type="button" class="btn btn-info" href="/garden/{{ garden.id }}/upload-image">Upload Image</a>
-                <a type="button" class="btn btn-success" href="#buy_shares">Sponsor</a>
-                <a type="button" class="btn btn-primary">Share</a>
+                <div class="btn-group">
+                    {% if current_user.is_farmer %}
+                    <a type="button" class="btn btn-warning" href="/garden/{{ garden.id }}/update">Update Garden</a>
+                    <a type="button" class="btn btn-info" href="/garden/{{ garden.id }}/upload-image">Upload Image</a>
+                    {% else %}
+                    <a type="button" class="btn btn-success" href="#buy_shares">Sponsor</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -67,10 +74,11 @@
         <hr>
         <p>{{ garden.description }}</p>
         <br>
-        <h4 id="buy_shares">Buy Shares</h4>
-        {% if current_user.is_farmer %}
-        <a class="btn btn-primary btn-sm" href="/garden/{{garden.id}}/create-tier">Create New Tier</a>
-        {% endif %}
+        <h4 id="buy_shares">Buy Shares
+            {% if current_user.is_farmer %}
+            <a class="btn btn-success btn-sm" href="/garden/{{garden.id}}/create-tier">Create New Tier</a>
+            {% endif %}
+        </h4>
         <table class="table">
             <thead>
                 <tr>
@@ -88,6 +96,13 @@
                 <td>{{tier.estimated_harvest|date:"F Y"}}</td>
                 <td>
                     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+                        <a class="accordion-toggle collapsed btn btn-outline-info" id="accordion1"
+                            data-toggle="collapse" href="#tier_{{tier.id}}">
+                            <i class="fas fa-caret-down"></i></a>
+                        {% if current_user.is_farmer %}
+                        <a class="btn btn-outline-danger" href="/garden/{{tier.garden.id}}/tier/{{tier.id}}/delete">
+                            <i class="fas fa-trash"></i></a>
+                        {% else %}
                         {% if tier.total_shares_remaining > 0 %}
                         <a class="btn btn-outline-success" href="/create-order/{{tier.id}}"><i
                                 class="fas fa-hand-holding-usd"></i></a>
@@ -95,11 +110,7 @@
                         <a class="btn btn-outline-secondary disabled" href="/create-order/{{tier.id}}">No Longer
                             Available</a>
                         {% endif %}
-                        <a class="accordion-toggle collapsed btn btn-outline-info" id="accordion1"
-                            data-toggle="collapse" href="#tier_{{tier.id}}">
-                            <i class="fas fa-caret-down"></i></a>
-                        <a class="btn btn-outline-danger" href="/garden/{{tier.garden.id}}/tier/{{tier.id}}/delete">
-                            <i class="fas fa-trash"></i></a>
+                        {% endif %}
                     </div>
                 </td>
                 <tr class="hide-table-padding">
@@ -115,7 +126,11 @@
             </tbody>
         </table>
         <br>
-        <h4>Updates ({{updates.count}})</h4>
+        <h4>Updates ({{updates.count}})
+            {% if current_user.is_farmer %}
+            <a class="btn btn-primary btn-sm" href="/garden/{{garden.id}}/create-update">Update Patrons</a>
+            {% endif %}
+        </h4>
         <hr>
         {% for update in updates %}
         <h5>{{ update.title }}</h5>

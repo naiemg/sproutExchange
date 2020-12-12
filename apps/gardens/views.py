@@ -15,6 +15,7 @@ def create_garden(request):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
+	context_dict['current_user'] = current_user
 	
 	if current_user.is_farmer == False:
 		# If current user is not a farmer, then don't show them this page

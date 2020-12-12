@@ -37,4 +37,5 @@ class CommentForm(forms.ModelForm):
 class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = Album
+        fields = ['field_name']
         exclude = ['garden']
