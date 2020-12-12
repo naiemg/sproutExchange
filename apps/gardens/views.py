@@ -86,7 +86,8 @@ def update_garden(request, garden_id):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
-	
+	context_dict['current_user'] = current_user
+
 	garden = Garden.objects.get(id = garden_id)
 	context_dict['garden'] = garden
 
@@ -139,7 +140,8 @@ def create_tier(request, garden_id):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
-	
+	context_dict['current_user'] = current_user
+
 	garden = Garden.objects.get(id = garden_id)
 	context_dict['garden'] = garden
 
@@ -189,7 +191,8 @@ def update_tier(request, garden_id, tier_id):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
-	
+	context_dict['current_user'] = current_user
+
 	garden = Garden.objects.get(id = garden_id)
 	context_dict['garden'] = garden
 
@@ -246,7 +249,8 @@ def create_update(request, garden_id):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
-	
+	context_dict['current_user'] = current_user
+
 	garden = Garden.objects.get(id = garden_id)
 	context_dict['garden'] = garden
 
@@ -279,6 +283,7 @@ def read_update(request, garden_id, update_id, update_slug):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
+	context_dict['current_user'] = current_user
 
 	update = Update.objects.get(id=update_id)
 	comments = Comment.objects.filter(update=update)
@@ -311,7 +316,8 @@ def create_comment(request, garden_id, update_id, update_slug):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
-	
+	context_dict['current_user'] = current_user
+
 	update = Update.objects.get(id=update_id)
 	context_dict['update'] = update
 
@@ -341,6 +347,8 @@ def upload_image(request, garden_id):
 	context_dict = {}
 	
 	current_user = UserProfile.objects.get(user=request.user)
+	context_dict['current_user'] = current_user
+
 	garden = Garden.objects.get(id=garden_id)
 	context_dict['garden'] = garden
 

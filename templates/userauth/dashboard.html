@@ -8,9 +8,7 @@ Dashboard
 <h1>Welcome, {{current_user.user.first_name}} {{current_user.user.last_name}}!</h1>
 <hr>
 <div class="row">
-
     <div class="col-md-4">
-        
         <!--Gardener View-->
         {% if current_user.is_farmer %}
 
@@ -30,12 +28,14 @@ Dashboard
         </div>
         <br>
         {% empty %}
-        
-        <!--Message if gardener owns no gardens-->
-        <h5>It seems like you don't have any garden's yet...</h5>
-        <a class="btn btn-secondary" href="/create-garden">Create a Garden</a>
-        {% endfor %}
 
+        <!--Message if gardener owns no gardens-->
+        <div class="text-center">
+            <h5>It seems like you don't have any garden's yet...</h5>
+            <br>
+            <a class="btn btn-secondary btn-lg" href="/create-garden">Create a Garden</a>
+            {% endfor %}
+        </div>
         <!--Patron View-->
         {% else %}
 
@@ -57,10 +57,12 @@ Dashboard
         </div>
         <br>
         {% empty %}
-        
         <!--Message if there are no holdings-->
-        <h5>It seems like you don't own any shares yet...</h5>
-        <a class="btn btn-secondary" href="/create-garden">Explore Gardens</a>
+        <div class="text-center">
+            <h5>It seems like you don't own any shares yet...</h5>
+            <br>
+            <a class="btn btn-secondary btn-lg" href="/all-listings">Explore Gardens</a>
+        </div>
         {% endfor %}
     </div>
     {% endif %}

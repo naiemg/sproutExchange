@@ -8,6 +8,11 @@ class DateInput(forms.DateInput):
 class GardenForm(forms.ModelForm):
     class Meta:
         model = Garden
+        labels = {
+			'name' : 'Give your garden a name',
+            'description': 'Tell us a little more about your garden',
+            'sponsor_deadline': 'Dealine for sponsors',
+		}
         widgets = {'sponsor_deadline': DateInput()}
         exclude = ['amount_raised', 'total_backers', 'date_created', 'active']
 

@@ -168,7 +168,7 @@ def all_listings(request):
 	listings = Listing.objects.all()
 	context_dict['listings'] = listings
 
-	tiers = Tier.objects.filter(total_shares_remaining__gt = 0)
+	tiers = Tier.objects.filter(total_shares_remaining__gt = 0).exclude(garden__isnull=True)
 	context_dict['tiers'] = tiers
 	
 	return render(request, 'exchange/all-listings.html', context_dict)
