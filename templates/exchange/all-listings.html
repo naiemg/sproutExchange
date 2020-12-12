@@ -19,7 +19,7 @@ All Listings
     <div class="row">
         <div class="col-md-8">
             <h2>{{ listing.tier.name }} - {{ listing.tier.garden.name }}</h2>
-            <h4>${{ listing.ask_price }}</h4>
+            <h5>User {{ listing.owner.user.username }} offering for ${{ listing.ask_price }}</h5>
             <sm>{{ listing.total_shares }} shares</sm>
         </div>
         <div class="col-md-4">
@@ -28,6 +28,8 @@ All Listings
         </div>
     </div>
 </div>
+{% empty %}
+<h5><i>Shares from other patrons not available</i></h5>
 {% endfor %}
 <hr>
 <h2>Direct Purchase From Garden</h2>
@@ -40,7 +42,7 @@ All Listings
     <div class="row">
         <div class="col-md-8">
             <h2>{{ tier.name }} - {{ tier.garden.name }}</h2>
-            <h4>${{ tier.price_per_share }}/share</h4>
+            <h5>${{ tier.price_per_share }}/share</h5>
             <sm>{{ tier.total_shares_remaining }} remaining ...</sm>
         </div>
         <div class="col-md-4">
