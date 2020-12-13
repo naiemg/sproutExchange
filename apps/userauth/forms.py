@@ -5,6 +5,7 @@ from apps.userauth.models import UserProfile, Address
 
 from address.forms import AddressField, AddressWidget
 
+# Form for all users to sign up for an account
 class UserForm(forms.ModelForm):
 	email = forms.EmailField(required=True)
 	password = forms.CharField(widget=forms.PasswordInput())
@@ -23,6 +24,7 @@ class UserForm(forms.ModelForm):
 		if password != confirm_password:
 			raise forms.ValidationError("Password do not match")
 
+# Form for all users to create a profile
 class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
@@ -31,6 +33,7 @@ class UserProfileForm(forms.ModelForm):
 		}
 		exclude = ['user', 'address']
 
+# Form that handles the validation of addresses from Google API
 class AddressForm(forms.ModelForm):
 	class Meta:
 		model = Address
