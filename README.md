@@ -11,4 +11,5 @@ specifications.
   
 As time passes, gardeners provide their patrons with updates through the platform. At harvest, all patrons are rewarded with their share of the produce. If at any time a patron decides that they don't want to own a share of a garden anymore, they may sell their shares in a market where other patrons can buy or sell shares after the initial offering.
 
-[![Visit Sprout Exchange](https://dabuttonfactory.com/button.png?t=Visit+Website&f=Open+Sans-Bold&ts=26&tc=fff&hp=45&vp=20&w=200&h=50&c=12&bgt=unicolored&bgc=45818e&shs=1&shc=444&sho=s)](https://sproutexchange.pythonanywhere.com/)
+## Visit the website
+https://sproutexchange.pythonanywhere.com/
